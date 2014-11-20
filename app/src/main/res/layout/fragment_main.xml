@@ -1,0 +1,42 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".MainActivity$PlaceholderFragment">
+
+    <TextView
+        android:id="@+id/question_txt_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/right_rtn"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:text="@string/right_btn"/>
+        <Button
+            android:id="@+id/wrong_rtn"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:text="@string/wrong_btn"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/next_btn"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        android:drawableRight="@drawable/next"
+        android:drawableEnd="@drawable/next"
+        android:drawablePadding="4dp"
+        android:text="@string/next_btn"/>
+
+</LinearLayout>
+

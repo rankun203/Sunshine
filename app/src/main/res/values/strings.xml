@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Sunshine</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="right_btn">对</string>
+    <string name="wrong_btn">不对</string>
+    <string name="right_text">正确</string>
+    <string name="wrong_text">错误</string>
+    <string name="next_btn">下一个</string>
+    <string name="q1">酸菜比醋酸</string>
+    <string name="q2">唐僧是女的演的</string>
+    <string name="q3">猪八戒的鼻子是真的</string>
+    <string name="q4">周杰伦的嗓子比较哑是因为情歌唱多了</string>
+    <string name="q5">刘若英喜欢刘德华</string>
+    <string name="q6">海水是苦的</string>
+    <string name="q7">天空是蓝的</string>
+
+</resources>
