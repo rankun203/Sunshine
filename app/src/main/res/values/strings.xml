@@ -17,10 +17,13 @@
     <string name="q6">海水是苦的</string>
     <string name="q7">天空是蓝的</string>
     <string name="prev_btn">上一个</string>
-    <string name="warning_txt">Are you sure you want to do this?</string>
-    <string name="show_answer_button">Show Answer</string>
-    <string name="cheat_button">Cheat</string>
-    <string name="judgement_toast">Cheating is wrong.</string>
-    <string name="cheat_label">Cheating</string>
+    <string name="warning_txt">真的要偷看答案吗?</string>
+    <string name="show_answer_button">显示答案</string>
+    <string name="cheat_button">瞄答案</string>
+    <string name="judgement_toast">瞄答案是不对的</string>
+    <string name="cheat_label">藏在阁楼里的答案</string>
+    <string name="cheat_failed">看了答案还是答错了</string>
+    <string name="cheat_activity_subtitle">我在偷看答案</string>
+
 
 </resources>

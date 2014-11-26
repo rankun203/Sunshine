@@ -1,5 +1,7 @@
 package sunshine.test.rankun.org.sunshine;
 
+import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
@@ -7,6 +9,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ActionMode;
@@ -25,6 +28,7 @@ public class CheatActivity extends Activity {
     private TextView mAnswerTextView;
     private Button mShowAnswerButton;
 
+    @TargetApi(11)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
@@ -47,6 +51,13 @@ public class CheatActivity extends Activity {
                 }
             }
         });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            ActionBar actionBar = getActionBar();
+            if(null != actionBar) {
+                actionBar.setSubtitle(R.string.cheat_activity_subtitle);
+            }
+        }
     }
 
     @Override
@@ -146,12 +157,6 @@ public class CheatActivity extends Activity {
     }
 
     @Override
-    public void onAttachFragment(Fragment fragment) {
-        Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
-        super.onAttachFragment(fragment);
-    }
-
-    @Override
     public View onCreatePanelView(int featureId) {
         Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
         return super.onCreatePanelView(featureId);
@@ -241,21 +246,4 @@ public class CheatActivity extends Activity {
         super.onTitleChanged(title, color);
     }
 
-    @Override
-    public ActionMode onWindowStartingActionMode(ActionMode.Callback callback) {
-        Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
-        return super.onWindowStartingActionMode(callback);
-    }
-
-    @Override
-    public void onActionModeStarted(ActionMode mode) {
-        Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
-        super.onActionModeStarted(mode);
-    }
-
-    @Override
-    public void onActionModeFinished(ActionMode mode) {
-        Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
-        super.onActionModeFinished(mode);
-    }
 }
