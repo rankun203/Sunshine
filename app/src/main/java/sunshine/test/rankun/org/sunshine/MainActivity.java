@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
     private ImageButton next_btn;
     private TextView question_txt;
     private Button cheat_button;
-    public static final String EXTRA_ANSWER_IS_TRUE = "test.org.sunshine.answer_is_true";
+    private boolean mIsCheater;
 
 
     @Override
@@ -51,27 +51,26 @@ public class MainActivity extends Activity {
         }
         if (null != savedInstanceState) {
             this.mCurrentIndex = savedInstanceState.getInt("mCurrentIndex", 0);
+            mQuestionList[mCurrentIndex].setCheated(savedInstanceState.getBoolean("mIsCheater", false));
         }
     }
 
     @Override
-    protected void onResume() {super.onResume();        Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());}
+    protected void onResume() { super.onResume(); Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName()); }
     @Override
-    protected void onStop() {super.onStop();        Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
-    }
+    protected void onStop() { super.onStop(); Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName()); }
     @Override
-    protected void onPause() {super.onPause();        Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
-    }
+    protected void onPause() { super.onPause(); Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName()); }
     @Override
-    protected void onDestroy() {super.onDestroy();        Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
-    }
+    protected void onDestroy() { super.onDestroy(); Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName()); }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
-
         super.onSaveInstanceState(outState);
+
         outState.putInt("mCurrentIndex", mCurrentIndex);
+        outState.putBoolean("mIsCheater", mQuestionList[mCurrentIndex].isCheated());
     }
 
     @Override
@@ -105,8 +104,8 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, CheatActivity.class);
-                intent.putExtra(EXTRA_ANSWER_IS_TRUE, mQuestionList[mCurrentIndex].isTrueQuestion());
-                startActivity(intent);
+                intent.putExtra(CheatActivity.EXTRA_ANSWER_IS_TRUE, mQuestionList[mCurrentIndex].isTrueQuestion());
+                startActivityForResult(intent, 0);
             }
         });
         prev_btn.setOnClickListener(new View.OnClickListener() {
@@ -130,10 +129,26 @@ public class MainActivity extends Activity {
         loadQ(mCurrentIndex);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
+        if (data == null) {
+            return;
+        }
+
+        if (0 == requestCode) {
+            super.onActivityResult(requestCode, resultCode, data);
+            boolean isAnswerCheated = data.getBooleanExtra(CheatActivity.EXTRA_ANSWER_SHOWN, false);
+            mQuestionList[mCurrentIndex].setCheated(isAnswerCheated);
+        }
+
+    }
+
     /**
      * Change to next question.
      */
     private void changeQuestion(boolean loadNext) {
+        mIsCheater = false;
         if (loadNext) {
             if (mCurrentIndex >= mQuestionList.length - 1) {
                 mCurrentIndex = 0;
@@ -157,10 +172,20 @@ public class MainActivity extends Activity {
      */
     private void checkAnswer(boolean userPressedTrue) {
         myToast.cancel();
-        if (mQuestionList[mCurrentIndex].isTrueQuestion() == userPressedTrue) {
-            myToast.makeToast(R.string.right_text);
+        TrueFalse mCurrentQuestion = mQuestionList[mCurrentIndex];
+        boolean answerIsTrue = mCurrentQuestion.isTrueQuestion();
+        if (mCurrentQuestion.isCheated()) {
+            if (answerIsTrue == userPressedTrue) {
+                myToast.makeToast(R.string.judgement_toast);
+            } else {
+                myToast.makeToast(R.string.cheat_failed);
+            }
         } else {
-            myToast.makeToast(R.string.wrong_text);
+            if (answerIsTrue == userPressedTrue) {
+                myToast.makeToast(R.string.right_text);
+            } else {
+                myToast.makeToast(R.string.wrong_text);
+            }
         }
     }
 

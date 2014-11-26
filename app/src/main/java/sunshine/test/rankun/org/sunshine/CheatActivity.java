@@ -22,6 +22,8 @@ import android.widget.TextView;
  */
 public class CheatActivity extends Activity {
     private static String tag = "Sunshine_CheatActivity";
+    public static final String EXTRA_ANSWER_IS_TRUE = "test.org.sunshine.answer_is_true";
+    public static final String EXTRA_ANSWER_SHOWN = "test.org.sunshine.answer_shown";
     private TextView mAnswerTextView;
     private Button mShowAnswerButton;
 
@@ -31,11 +33,13 @@ public class CheatActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cheat);
 
-        final boolean isTrueQuestion = getIntent().getBooleanExtra(MainActivity.EXTRA_ANSWER_IS_TRUE, false);
+        final boolean isTrueQuestion = getIntent().getBooleanExtra(this.EXTRA_ANSWER_IS_TRUE, false);
         Log.d(tag, isTrueQuestion ? "isTrueQuestion" : "isFalseQuestion");
 
         mAnswerTextView = (TextView) findViewById(R.id.answerTextView);
         mShowAnswerButton = (Button) findViewById(R.id.showAnswerButton);
+
+        setAnswerShownResult(false);
 
         mShowAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,8 +49,16 @@ public class CheatActivity extends Activity {
                 } else {
                     mAnswerTextView.setText(R.string.wrong_text);
                 }
+                setAnswerShownResult(true);
             }
         });
+
+    }
+
+    private void setAnswerShownResult(boolean isAnswerShown) {
+        Intent data = new Intent();
+        data.putExtra(this.EXTRA_ANSWER_SHOWN, isAnswerShown);
+        setResult(RESULT_OK, data);
     }
 
     @Override

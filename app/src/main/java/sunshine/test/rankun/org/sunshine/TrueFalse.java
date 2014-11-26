@@ -6,6 +6,8 @@ package sunshine.test.rankun.org.sunshine;
 public class TrueFalse {
     private int question;
     private boolean trueQuestion;
+    // If the question was cheated
+    private boolean cheated;
 
     public TrueFalse(int question, boolean trueQuestion) {
         this.question = question;
@@ -26,5 +28,13 @@ public class TrueFalse {
 
     public void setTrueQuestion(boolean trueQuestion) {
         this.trueQuestion = trueQuestion;
+    }
+
+    public boolean isCheated() {
+        return cheated;
+    }
+
+    public void setCheated(boolean cheated) {
+        this.cheated = cheated;
     }
 }
