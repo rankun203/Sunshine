@@ -1,20 +1,18 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/FrameLayout1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    tools:context=".MainActivity$PlaceholderFragment">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/question_txt_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:padding="20dp"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center_vertical|center_horizontal"
         android:orientation="horizontal">
 
 
@@ -29,9 +27,16 @@
             android:layout_height="@dimen/button_height"
             android:text="@string/wrong_btn"/>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:paddingBottom="20dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="20dp"
+        android:paddingRight="20dp"
+        android:paddingLeft="0dp">
         <ImageButton
             android:id="@+id/prev_btn"
             android:contentDescription="@string/prev_btn"
@@ -40,6 +45,12 @@
             android:paddingRight="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/cheat_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cheat_button"/>
+
         <ImageButton
             android:id="@+id/next_btn"
             android:contentDescription="@string/next_btn"
@@ -49,11 +60,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
-    <Button
-        android:id="@+id/cheat_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cheat_button"/>
 
-</LinearLayout>
 
+</FrameLayout>

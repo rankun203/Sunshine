@@ -2,6 +2,7 @@ package sunshine.test.rankun.org.sunshine;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,13 +11,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
     private static String tag = "Sunshine_MainActivity";
-    private TrueFalse[] questionList = new TrueFalse[]{
+    private TrueFalse[] mQuestionList = new TrueFalse[]{
             new TrueFalse(R.string.q1, true),
             new TrueFalse(R.string.q2, true),
             new TrueFalse(R.string.q3, false),
@@ -25,11 +27,21 @@ public class MainActivity extends Activity {
             new TrueFalse(R.string.q6, false),
             new TrueFalse(R.string.q7, false)
     };
-    private static int questionPos = 0;
+    private int mCurrentIndex = 0;
     private MyToast myToast = new MyToast();
+    private Button right_btn;
+    private Button wrong_btn;
+    private ImageButton prev_btn;
+    private ImageButton next_btn;
+    private TextView question_txt;
+    private Button cheat_button;
+    public static final String EXTRA_ANSWER_IS_TRUE = "test.org.sunshine.answer_is_true";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
@@ -37,14 +49,43 @@ public class MainActivity extends Activity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+        if (null != savedInstanceState) {
+            this.mCurrentIndex = savedInstanceState.getInt("mCurrentIndex", 0);
+        }
+    }
+
+    @Override
+    protected void onResume() {super.onResume();        Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());}
+    @Override
+    protected void onStop() {super.onStop();        Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
+    }
+    @Override
+    protected void onPause() {super.onPause();        Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
+    }
+    @Override
+    protected void onDestroy() {super.onDestroy();        Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
+
+        super.onSaveInstanceState(outState);
+        outState.putInt("mCurrentIndex", mCurrentIndex);
     }
 
     @Override
     protected void onStart() {
+        Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
+
         super.onStart();
-        Button right_btn = (Button) findViewById(R.id.right_rtn);
-        Button wrong_btn = (Button) findViewById(R.id.wrong_rtn);
-        Button next_btn = (Button) findViewById(R.id.next_btn);
+        right_btn = (Button) findViewById(R.id.right_rtn);
+        wrong_btn = (Button) findViewById(R.id.wrong_rtn);
+        prev_btn = (ImageButton) findViewById(R.id.prev_btn);
+        next_btn = (ImageButton) findViewById(R.id.next_btn);
+        question_txt = (TextView) findViewById(R.id.question_txt_view);
+        cheat_button = (Button) findViewById(R.id.cheat_button);
+
 
         right_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,36 +101,84 @@ public class MainActivity extends Activity {
                 checkAnswer(false);
             }
         });
+        cheat_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, CheatActivity.class);
+                intent.putExtra(EXTRA_ANSWER_IS_TRUE, mQuestionList[mCurrentIndex].isTrueQuestion());
+                startActivity(intent);
+            }
+        });
+        prev_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeQuestion(false);
+            }
+        });
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (questionPos >= questionList.length - 1) {
-                    questionPos = 0;
-                    loadQ(questionPos);
-                } else {
-                    loadQ(++questionPos);
-                }
+                changeQuestion(true);
             }
         });
-        loadQ(0);
+        question_txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeQuestion(true);
+            }
+        });
+        loadQ(mCurrentIndex);
     }
 
+    /**
+     * Change to next question.
+     */
+    private void changeQuestion(boolean loadNext) {
+        if (loadNext) {
+            if (mCurrentIndex >= mQuestionList.length - 1) {
+                mCurrentIndex = 0;
+                loadQ(mCurrentIndex);
+            } else {
+                loadQ(++mCurrentIndex);
+            }
+        } else {
+            if (mCurrentIndex == 0) {
+                mCurrentIndex = mQuestionList.length - 1;
+                loadQ(mCurrentIndex);
+            } else {
+                loadQ(--mCurrentIndex);
+            }
+        }
+    }
+
+    /**
+     * Check if user selected the right answer
+     * @param userPressedTrue user pressed true
+     */
     private void checkAnswer(boolean userPressedTrue) {
         myToast.cancel();
-        if (questionList[questionPos].isTrueQuestion() == userPressedTrue) {
+        if (mQuestionList[mCurrentIndex].isTrueQuestion() == userPressedTrue) {
             myToast.makeToast(R.string.right_text);
         } else {
             myToast.makeToast(R.string.wrong_text);
         }
     }
 
+    /**
+     * Load the question with particular index
+     * @param pos question index
+     */
     private void loadQ(int pos) {
-        TextView question_txt = (TextView) findViewById(R.id.question_txt_view);
-        question_txt.setText(questionList[pos].getQuestion());
+        if (pos < 0 || pos > mQuestionList.length) {
+            return;
+        }
+        question_txt.setText(mQuestionList[pos].getQuestion());
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
@@ -97,6 +186,8 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
+
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -118,6 +209,8 @@ public class MainActivity extends Activity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+            Log.d(tag, Thread.currentThread().getStackTrace()[3].getMethodName());
+
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             return rootView;
         }
