@@ -27,6 +27,7 @@ public class CrimeFragment extends Fragment {
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
     private static final String TAG = "CrimeIntent_CrimeFragment";
+    public static final String crimeUUID = "org.rankun.test.crimeintent.CrimeFragment.crime_uuid";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -19,6 +19,9 @@ public class Crime {
     public Crime(String pTitle, boolean pSolved) {
         this.mId = UUID.randomUUID();
         this.mDate = new Date();
+
+        mTitle = pTitle;
+        mSolved = pSolved;
     }
 
     public UUID getId() {
@@ -47,5 +50,10 @@ public class Crime {
 
     public boolean isSolved() {
         return mSolved;
+    }
+
+    @Override
+    public String toString() {
+        return mTitle;
     }
 }
