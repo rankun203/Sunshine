@@ -16,6 +16,8 @@ public abstract class SingleFragmentActivity extends FragmentActivity {
         setContentView(R.layout.activity_fragment);
 
         fm = getSupportFragmentManager();
+
+        // Finds a fragment that was identified by the container ID when added in a transaction.
         Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
 
         // If fragmentContainer doesn't presented in current Activity's FragmentManager.

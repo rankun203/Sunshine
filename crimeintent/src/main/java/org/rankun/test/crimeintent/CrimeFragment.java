@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import java.text.SimpleDateFormat;
+import java.util.UUID;
 import java.util.zip.Inflater;
 
 /**
@@ -27,14 +28,29 @@ public class CrimeFragment extends Fragment {
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
     private static final String TAG = "CrimeIntent_CrimeFragment";
-    public static final String crimeUUID = "org.rankun.test.crimeintent.CrimeFragment.crime_uuid";
+    public static final String EXTRA_CRIME_ID = "org.rankun.test.crimeintent.CrimeFragment.extra_crime_id";
+
+    /**
+     * Use to create a Crime Fragment rather than call the constructor directly.
+     * @param pCrimeId the UUID of the Crime that the Fragment wants to show.
+     * @return generated CrimeFragment
+     */
+    public static Fragment newInstance(UUID pCrimeId) {
+        Bundle args = new Bundle();
+        args.putSerializable(EXTRA_CRIME_ID, pCrimeId);
+
+        CrimeFragment crimeFragment = new CrimeFragment();
+        crimeFragment.setArguments(args);
+        return crimeFragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         super.onCreate(savedInstanceState);
 
-        mCrime = new Crime();
+        UUID crimeId = (UUID) getArguments().getSerializable(EXTRA_CRIME_ID);
+        mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
 
     }
 
@@ -58,13 +74,20 @@ public class CrimeFragment extends Fragment {
             public void afterTextChanged(Editable s) { }
         });
 
+        getActivity().setTitle(mCrime.getTitle());
+
+        EditText crimeText = (EditText) v.findViewById(R.id.crime_text);
+        crimeText.setText(mCrime.getTitle());
+
         mDateButton = (Button) v.findViewById(R.id.crime_date);
         SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM dd, yyyy");
         String crimeDate = sdf.format(mCrime.getDate());
         mDateButton.setText(crimeDate);
+
         mDateButton.setEnabled(false);
 
         mSolvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
+        mSolvedCheckBox.setChecked(mCrime.isSolved());
         mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
