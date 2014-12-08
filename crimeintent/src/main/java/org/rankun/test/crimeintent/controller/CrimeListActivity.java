@@ -1,4 +1,4 @@
-package org.rankun.test.crimeintent;
+package org.rankun.test.crimeintent.controller;
 
 import android.support.v4.app.Fragment;
 

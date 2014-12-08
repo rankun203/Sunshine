@@ -1,8 +1,10 @@
-package org.rankun.test.crimeintent;
+package org.rankun.test.crimeintent.controller;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+
+import org.rankun.test.crimeintent.R;
 
 
 public abstract class SingleFragmentActivity extends FragmentActivity {

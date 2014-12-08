@@ -1,4 +1,4 @@
-package org.rankun.test.crimeintent;
+package org.rankun.test.crimeintent.controller;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -15,9 +15,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
+import org.rankun.test.crimeintent.R;
+import org.rankun.test.crimeintent.model.Crime;
+import org.rankun.test.crimeintent.model.CrimeLab;
+
 import java.text.SimpleDateFormat;
 import java.util.UUID;
-import java.util.zip.Inflater;
 
 /**
  * Created by rankun203 on 11/27/14.
@@ -28,7 +31,7 @@ public class CrimeFragment extends Fragment {
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
     private static final String TAG = "CrimeIntent_CrimeFragment";
-    public static final String EXTRA_CRIME_ID = "org.rankun.test.crimeintent.CrimeFragment.extra_crime_id";
+    public static final String EXTRA_CRIME_ID = "org.rankun.test.crimeintent.controller.CrimeFragment.extra_crime_id";
 
     /**
      * Use to create a Crime Fragment rather than call the constructor directly.
@@ -74,10 +77,7 @@ public class CrimeFragment extends Fragment {
             public void afterTextChanged(Editable s) { }
         });
 
-        getActivity().setTitle(mCrime.getTitle());
-
-        EditText crimeText = (EditText) v.findViewById(R.id.crime_text);
-        crimeText.setText(mCrime.getTitle());
+        mCrimeText.setText(mCrime.getTitle());
 
         mDateButton = (Button) v.findViewById(R.id.crime_date);
         SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM dd, yyyy");
@@ -98,6 +98,8 @@ public class CrimeFragment extends Fragment {
 
         return v;
     }
+
+
 
     @Override
     public void onAttach(Activity activity) {

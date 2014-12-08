@@ -1,4 +1,4 @@
-package org.rankun.test.crimeintent;
+package org.rankun.test.crimeintent.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import org.rankun.test.crimeintent.R;
+import org.rankun.test.crimeintent.model.Crime;
+import org.rankun.test.crimeintent.model.CrimeLab;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -44,7 +48,8 @@ public class CrimeListFragment extends ListFragment{
 
         Log.d(TAG, "onListItem(" + position + ")Click");
 
-        Intent i = new Intent(getActivity(), CrimeActivity.class);
+        // Start CrimePagerActivity from this fragment.
+        Intent i = new Intent(getActivity(), CrimePagerActivity.class);
         i.putExtra(CrimeFragment.EXTRA_CRIME_ID, c.getId());
         startActivity(i);
     }

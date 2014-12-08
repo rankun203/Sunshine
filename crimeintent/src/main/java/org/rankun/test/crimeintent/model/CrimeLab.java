@@ -1,4 +1,4 @@
-package org.rankun.test.crimeintent;
+package org.rankun.test.crimeintent.model;
 
 import android.content.Context;
 
