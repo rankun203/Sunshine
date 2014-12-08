@@ -83,8 +83,13 @@ public class CrimeFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM dd, yyyy");
         String crimeDate = sdf.format(mCrime.getDate());
         mDateButton.setText(crimeDate);
-
-        mDateButton.setEnabled(false);
+        mDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialogFragment datePicker = new DatePickerDialogFragment();
+                datePicker.show(getActivity().getSupportFragmentManager(), "datePicker");
+            }
+        });
 
         mSolvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
         mSolvedCheckBox.setChecked(mCrime.isSolved());
@@ -98,6 +103,7 @@ public class CrimeFragment extends Fragment {
 
         return v;
     }
+
 
 
 
