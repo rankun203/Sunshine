@@ -25,7 +25,7 @@ import java.util.List;
 public class CrimeListFragment extends ListFragment{
     private static final String TAG = "CrimeListFragment";
     private List<Crime> mCrimes;
-    private static SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM dd, yyyy HH:mm:ss.SSS");
+    private static final SimpleDateFormat crimeDateFormat1 = new SimpleDateFormat("EEE, MM月 dd日, yyyy");
 
 
     @Override
@@ -80,7 +80,7 @@ public class CrimeListFragment extends ListFragment{
             titleTextView.setText(crime.getTitle());
 
             TextView dateTextView = (TextView) convertView.findViewById(R.id.crime_list_item_dateTextView);
-            dateTextView.setText(sdf.format(crime.getDate()));
+            dateTextView.setText(crimeDateFormat1.format(crime.getDate()));
 
             CheckBox resolvedCheckbox = (CheckBox) convertView.findViewById(R.id.crime_list_item_solvedCheckbox);
             resolvedCheckbox.setChecked(crime.isSolved());

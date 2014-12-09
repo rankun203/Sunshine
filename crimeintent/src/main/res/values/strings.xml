@@ -2,13 +2,12 @@
 <resources>
 
     <string name="app_name">Crimes</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="crime_text_hint">Input the crime desc</string>
-    <string name="crime_text_label">Title</string>
-    <string name="crime_details_label">Details</string>
-    <string name="crime_solved_label">Solved?</string>
+    <string name="crime_text_hint">输入犯罪描述</string>
+    <string name="crime_text_label">标题</string>
+    <string name="crime_details_label">详情</string>
+    <string name="crime_solved_label">已处理?</string>
     <string name="crimes_title">Crimes</string>
-    <string name="date_picker_title">Date of Crime:</string>
+    <string name="date_picker_title">请选择日期:</string>
     <string name="date_picker_choose">确认</string>
     <string name="date_picker_cancel">取消</string>
 

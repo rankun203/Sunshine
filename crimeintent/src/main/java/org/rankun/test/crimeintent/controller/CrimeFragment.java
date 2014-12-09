@@ -1,6 +1,7 @@
 package org.rankun.test.crimeintent.controller;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import org.rankun.test.crimeintent.model.Crime;
 import org.rankun.test.crimeintent.model.CrimeLab;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -32,7 +34,10 @@ public class CrimeFragment extends Fragment {
     private CheckBox mSolvedCheckBox;
     private static final String TAG = "CrimeIntent_CrimeFragment";
     public static final String EXTRA_CRIME_ID = "org.rankun.test.crimeintent.controller.CrimeFragment.extra_crime_id";
-    private static final String DIALOG_DATE = "datePicker";
+    public static final String EXTRA_NEW_DATE = "org.rankun.test.crimeintent.controller.CrimeFragment.new_date";
+    private static final String TAG_DIALOG_DATE = "datePicker";
+    private static final int REQUEST_DATE = 0;
+    private static final SimpleDateFormat crimeDateFormat = new SimpleDateFormat("yyyy年 MM月 dd日, EEE");
 
     /**
      * Use to create a Crime Fragment rather than call the constructor directly.
@@ -81,14 +86,13 @@ public class CrimeFragment extends Fragment {
         mCrimeText.setText(mCrime.getTitle());
 
         mDateButton = (Button) v.findViewById(R.id.crime_date);
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM dd, yyyy");
-        String crimeDate = sdf.format(mCrime.getDate());
-        mDateButton.setText(crimeDate);
+        updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialogFragment datePicker = new DatePickerDialogFragment();
-                datePicker.show(getActivity().getSupportFragmentManager(), DIALOG_DATE  );
+                DatePickerDialogFragment datePicker = DatePickerDialogFragment.newInstance(mCrime.getDate());
+                datePicker.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
+                datePicker.show(getActivity().getSupportFragmentManager(), TAG_DIALOG_DATE);
             }
         });
 
@@ -105,8 +109,23 @@ public class CrimeFragment extends Fragment {
         return v;
     }
 
+    public void updateDate() {
+        String crimeDate = crimeDateFormat.format(mCrime.getDate());
+        mDateButton.setText(crimeDate);
+    }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_DATE) {
+            Date date = (Date) data.getSerializableExtra(DatePickerDialogFragment.EXTRA_DATE);
+            mCrime.setDate(date);
+            updateDate();
+        }
+    }
 
     @Override
     public void onAttach(Activity activity) {
