@@ -9,5 +9,7 @@
     <string name="crime_solved_label">Solved?</string>
     <string name="crimes_title">Crimes</string>
     <string name="date_picker_title">Date of Crime:</string>
+    <string name="date_picker_choose">确认</string>
+    <string name="date_picker_cancel">取消</string>
 
 </resources>

@@ -32,6 +32,7 @@ public class CrimeFragment extends Fragment {
     private CheckBox mSolvedCheckBox;
     private static final String TAG = "CrimeIntent_CrimeFragment";
     public static final String EXTRA_CRIME_ID = "org.rankun.test.crimeintent.controller.CrimeFragment.extra_crime_id";
+    private static final String DIALOG_DATE = "datePicker";
 
     /**
      * Use to create a Crime Fragment rather than call the constructor directly.
@@ -87,7 +88,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DatePickerDialogFragment datePicker = new DatePickerDialogFragment();
-                datePicker.show(getActivity().getSupportFragmentManager(), "datePicker");
+                datePicker.show(getActivity().getSupportFragmentManager(), DIALOG_DATE  );
             }
         });
 

@@ -2,15 +2,15 @@ package org.rankun.test.crimeintent.controller;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.view.View;
 import android.widget.DatePicker;
 
 import org.rankun.test.crimeintent.R;
-
-import java.util.Calendar;
 
 /**
  * Created by rankun203 on 12/8/14.
@@ -21,13 +21,24 @@ public class DatePickerDialogFragment extends DialogFragment implements DatePick
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog pickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
-        pickerDialog.setTitle(R.string.date_picker_title);
-        return pickerDialog;
+        View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_datepicker, null);
+
+        return new DatePickerDialog.Builder(getActivity())
+                .setTitle(R.string.date_picker_title)
+                .setPositiveButton(R.string.date_picker_choose, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d(TAG, getString(R.string.date_picker_choose));
+                    }
+                })
+                .setNegativeButton(R.string.date_picker_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d(TAG, getString(R.string.date_picker_cancel));
+                    }
+                })
+                .setView(v)
+                .create();
     }
 
     @Override
