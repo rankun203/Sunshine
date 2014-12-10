@@ -19,8 +19,11 @@ import android.widget.CompoundButton;
 import org.rankun.test.crimeintent.R;
 import org.rankun.test.crimeintent.model.Crime;
 import org.rankun.test.crimeintent.model.CrimeLab;
+import org.rankun.test.crimeintent.model.SimpleDate;
+import org.rankun.test.crimeintent.model.SimpleTime;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -35,11 +38,14 @@ public class CrimeFragment extends Fragment {
     private static final String TAG = "CrimeIntent_CrimeFragment";
     public static final String EXTRA_CRIME_ID = "org.rankun.test.crimeintent.controller.CrimeFragment.extra_crime_id";
     public static final String EXTRA_NEW_DATE = "org.rankun.test.crimeintent.controller.CrimeFragment.new_date";
-    private static final String TAG_DIALOG_DATE = "datePicker";
     private static final String TAG_DIALOG_DATETIME_TYPE = "datetime_type_picker";
+    private static final String TAG_DIALOG_TIME = "time_dialog";
+    private static final String TAG_DIALOG_DATE = "date_dialog";
     private static final int REQUEST_CODE_DATE = 0;
     private static final int REQUEST_CODE_DATETIME_TYPE = 1;
-    private static final SimpleDateFormat crimeDateFormat = new SimpleDateFormat("yyyy年 MM月 dd日, EEE");
+    private static final int REQUEST_CODE_FOR_TIME = 2;
+    private static final int REQUEST_CODE_FOR_DATE = 3;
+    private static final SimpleDateFormat crimeDateFormat = new SimpleDateFormat("yyyy年 MM月 dd日, EEE HH:mm:ss");
 
     /**
      * Use to create a Crime Fragment rather than call the constructor directly.
@@ -116,59 +122,82 @@ public class CrimeFragment extends Fragment {
         mDateButton.setText(crimeDate);
     }
 
+    /**
+     * TODO: Test the time elapse using Calendar to convert a Time.
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) {
             return;
-        }
-        if (requestCode == REQUEST_CODE_DATE) {
+        } else if (requestCode == REQUEST_CODE_DATE) {
             Date date = (Date) data.getSerializableExtra(DatePickerDialogFragment.EXTRA_DATE);
             mCrime.setDate(date);
             updateDate();
+        } else if (requestCode == REQUEST_CODE_FOR_TIME) {
+            SimpleTime time = (SimpleTime) data.getSerializableExtra(TimeDialogFragment.EXTRA_TIME);
+            Calendar c = Calendar.getInstance();
+            c.setTime(mCrime.getDate());
+            c.set(Calendar.HOUR_OF_DAY, time.getHour());
+            c.set(Calendar.MINUTE, time.getMinute());
+            c.set(Calendar.SECOND, time.getSecond());
+
+            mCrime.setDate(c.getTime());
+            updateDate();
+        } else if (requestCode == REQUEST_CODE_FOR_DATE) {
+            SimpleDate date = (SimpleDate) data.getSerializableExtra(DateDialogFragment.EXTRA_DATE);
+
+            // Use a Calendar to update only the original Date's year, month, day.
+            Calendar c = Calendar.getInstance();
+            c.setTime(mCrime.getDate());
+            c.set(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
+
+            mCrime.setDate(c.getTime());
+            updateDate();
+        } else if (requestCode == REQUEST_CODE_DATETIME_TYPE) {
+            // This return is from a Date_or_Time choose
+
+            int dialogSelected = data.getIntExtra(TimeOrDateDialogFragment.KEY_EXTRA_DATE, 0);
+            startDateOrTimeSelectDialog(dialogSelected);
         }
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        Log.d(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+    /**
+     * Start the dialog to choose a Time or a Date.
+     *
+     * @param dialogSelected Which Dialog should be shown, can be
+     * {@link org.rankun.test.crimeintent.controller.TimeOrDateDialogFragment#CHOOSE_BUTTON_1} or
+     * {@link org.rankun.test.crimeintent.controller.TimeOrDateDialogFragment#CHOOSE_BUTTON_2}
+     */
+    private void startDateOrTimeSelectDialog(int dialogSelected) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(mCrime.getDate());
 
-        super.onAttach(activity);
+        if (dialogSelected == TimeOrDateDialogFragment.CHOOSE_BUTTON_1) {
+            TimeDialogFragment timeDialogFragment = TimeDialogFragment.newInstance(
+                    new SimpleTime(
+                            c.get(Calendar.HOUR_OF_DAY),
+                            c.get(Calendar.MINUTE),
+                            c.get(Calendar.SECOND)
+                    )
+            );
+            timeDialogFragment.setTargetFragment(CrimeFragment.this, REQUEST_CODE_FOR_TIME);
+            timeDialogFragment.show(getActivity().getSupportFragmentManager(), TAG_DIALOG_TIME);
+        } else if (dialogSelected == TimeOrDateDialogFragment.CHOOSE_BUTTON_2) {
+            DateDialogFragment fragment = DateDialogFragment.newInstance(
+                    new SimpleDate(
+                            c.get(Calendar.YEAR),
+                            c.get(Calendar.MONTH),
+                            c.get(Calendar.DAY_OF_MONTH)
+                    )
+            );
+            fragment.setTargetFragment(CrimeFragment.this, REQUEST_CODE_FOR_DATE);
+            fragment.show(getActivity().getSupportFragmentManager(), TAG_DIALOG_DATE);
+        } else if (dialogSelected == 0) {
+            Log.d(TAG, "选择错误");
+        }
+
     }
 
-    @Override
-    public void onDestroy() {
-        Log.d(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
-        super.onDestroy();
-    }
-
-    @Override
-    public void onDetach() {
-        Log.d(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
-        super.onDetach();
-    }
-
-    @Override
-    public void onPause() {
-        Log.d(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        Log.d(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
-        super.onStop();
-    }
-
-    @Override
-    public void onStart() {
-        Log.d(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
-        super.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        Log.d(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
-        super.onResume();
-    }
 }
+
