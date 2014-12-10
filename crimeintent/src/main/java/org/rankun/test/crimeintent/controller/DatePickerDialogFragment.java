@@ -29,7 +29,7 @@ public class DatePickerDialogFragment extends DialogFragment implements DatePick
 
     /**
      * Use new Instance to receive a Date object instead of create this Fragment in calling side,
-     * More Flexibility.
+     * Control the create process itself is More Flexibility.
      * @param date the Date to be shown.
      * @return {@link DatePickerDialogFragment}
      */
@@ -62,6 +62,7 @@ public class DatePickerDialogFragment extends DialogFragment implements DatePick
 
     private void sendResult(int resultCode) {
         if (getTargetFragment() == null) {
+            Log.w(TAG, "getTargetFragment returned nothing.");
             return;
         }
         Intent i = new Intent();
