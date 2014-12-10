@@ -36,7 +36,9 @@ public class CrimeFragment extends Fragment {
     public static final String EXTRA_CRIME_ID = "org.rankun.test.crimeintent.controller.CrimeFragment.extra_crime_id";
     public static final String EXTRA_NEW_DATE = "org.rankun.test.crimeintent.controller.CrimeFragment.new_date";
     private static final String TAG_DIALOG_DATE = "datePicker";
+    private static final String TAG_DIALOG_DATETIME_TYPE = "datetime_type_picker";
     private static final int REQUEST_CODE_DATE = 0;
+    private static final int REQUEST_CODE_DATETIME_TYPE = 1;
     private static final SimpleDateFormat crimeDateFormat = new SimpleDateFormat("yyyy年 MM月 dd日, EEE");
 
     /**
@@ -90,9 +92,9 @@ public class CrimeFragment extends Fragment {
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialogFragment datePicker = DatePickerDialogFragment.newInstance(mCrime.getDate());
-                datePicker.setTargetFragment(CrimeFragment.this, REQUEST_CODE_DATE);
-                datePicker.show(getActivity().getSupportFragmentManager(), TAG_DIALOG_DATE);
+                TimeOrDateDialogFragment typePicker = TimeOrDateDialogFragment.newInstance(mCrime.getDate());
+                typePicker.setTargetFragment(CrimeFragment.this, REQUEST_CODE_DATETIME_TYPE);
+                typePicker.show(getActivity().getSupportFragmentManager(), TAG_DIALOG_DATETIME_TYPE);
             }
         });
 
