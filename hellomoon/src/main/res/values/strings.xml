@@ -9,5 +9,6 @@
     <string name="description">Neil Armstrong stepping onto the moon</string>
     <string name="media_pause">Pause</string>
     <string name="media_resume">Resume</string>
+    <string name="media_video">Video</string>
 
 </resources>

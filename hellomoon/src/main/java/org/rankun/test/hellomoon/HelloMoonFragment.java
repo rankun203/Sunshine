@@ -1,5 +1,6 @@
 package org.rankun.test.hellomoon;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ public class HelloMoonFragment extends Fragment {
     private Button mPlayButton;
     private Button mStopButton;
     private Button mPauseButton;
+    private Button mVideoButton;
     private AudioPlayer mPlayer;
 
     @Override
@@ -25,6 +27,8 @@ public class HelloMoonFragment extends Fragment {
         mPlayButton = (Button) v.findViewById(R.id.hellomoon_playButton);
         mStopButton = (Button) v.findViewById(R.id.hellomoon_stopButton);
         mPauseButton = (Button) v.findViewById(R.id.hellomoon_pauseButton);
+        mVideoButton = (Button) v.findViewById(R.id.hellomoon_videoButton);
+
         mPlayer = new AudioPlayer();
 
         mPlayButton.setOnClickListener(new View.OnClickListener() {
@@ -49,6 +53,13 @@ public class HelloMoonFragment extends Fragment {
                     mPlayer.pause();
                     mPauseButton.setText(R.string.media_resume);
                 }
+            }
+        });
+        mVideoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), HelloMoonVideoActivity.class);
+                startActivity(i);
             }
         });
 
