@@ -29,8 +29,8 @@ public class VideoPlayer {
         mPlayer.start();
     }
     public void stop() {
+        mPlayer.stop();
         if (mPlayer != null) {
-            mPlayer.stop();
             mPlayer.release();
             mPlayer = null;
         }
