@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_floating_material_dark">
+
+    <ImageView
+        android:src="@drawable/armstrong"
+        android:contentDescription="@string/description"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
+        android:layout_weight="1"/>
+
+    <TableRow
+        android:gravity="center|bottom"
+        android:layout_weight="0" >
+
+        <Button
+            android:id="@+id/hellomoon_playButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/media_play"/>
+
+        <Button
+            android:id="@+id/hellomoon_pauseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/media_pause"/>
+
+        <Button
+            android:id="@+id/hellomoon_stopButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/media_stop"/>
+    </TableRow>
+
+</TableLayout>

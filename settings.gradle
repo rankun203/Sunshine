@@ -1,1 +1,1 @@
-include ':app', ':crimeintent'
+include ':app', ':crimeintent', ':hellomoon'
